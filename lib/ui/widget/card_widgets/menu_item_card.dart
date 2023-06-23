@@ -7,8 +7,10 @@ import '../../utils/other_utils.dart';
 
 class MenuItemCard extends StatelessWidget {
   const MenuItemCard({
-    Key? key,
+    Key? key, this.fromOwner,
   }) : super(key: key);
+
+  final bool? fromOwner;
 
   @override
   Widget build(BuildContext context) {
@@ -79,20 +81,23 @@ class MenuItemCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        InkWell(
-                          onTap: () {},
-                          borderRadius: BorderRadius.circular(30),
-                          child: SizedBox(
-                            height: 30,
-                            width: 30,
-                            child: Card(
-                              color: colorPrimaryGreen,
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              child: const Center(
-                                child: Icon(Icons.add, color: Colors.white, size: 18,),
+                        Visibility(
+                          visible: !(fromOwner ?? false),
+                          child: InkWell(
+                            onTap: () {},
+                            borderRadius: BorderRadius.circular(30),
+                            child: SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: Card(
+                                color: colorPrimaryGreen,
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: const Center(
+                                  child: Icon(Icons.add, color: Colors.white, size: 18,),
+                                ),
                               ),
                             ),
                           ),

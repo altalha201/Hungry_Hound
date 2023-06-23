@@ -55,6 +55,9 @@ ThemeData hungryHoundTheme() {
     checkboxTheme: CheckboxThemeData(
         fillColor: MaterialStateColor.resolveWith((states) => colorPrimaryGreen)
     ),
+    listTileTheme: const ListTileThemeData(
+      iconColor: colorPrimaryGreen
+    )
   );
 }
 

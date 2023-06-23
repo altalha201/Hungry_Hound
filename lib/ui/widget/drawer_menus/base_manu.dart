@@ -49,7 +49,6 @@ class BaseManu extends StatelessWidget {
               },
               leading: const Icon(
                 Icons.login_sharp,
-                color: colorPrimaryGreen,
               ),
               title: const Text("Sign in"),
             ),
@@ -59,7 +58,6 @@ class BaseManu extends StatelessWidget {
               },
               leading: const Icon(
                 Icons.create_sharp,
-                color: colorPrimaryGreen,
               ),
               title: const Text("Create account"),
             )

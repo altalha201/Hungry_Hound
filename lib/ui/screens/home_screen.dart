@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hungry_hound/ui/widget/text_logo.dart';
 
 import '../widget/card_widgets/restaurant_card.dart';
 import '../widget/drawer_menus/base_manu.dart';
@@ -15,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Hungry Hound"),
+        title: const TextLogo(),
       ),
       drawer: const BaseManu(),
       body: Padding(

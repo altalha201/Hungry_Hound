@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hungry_hound/ui/utils/application_colors.dart';
 
+import '../utils/application_colors.dart';
 import '../utils/other_utils.dart';
+import 'restaurant_tabs/menu_tab.dart';
+import 'restaurant_tabs/reviews_tab.dart';
 
 class RestaurantScreen extends StatefulWidget {
   const RestaurantScreen({Key? key}) : super(key: key);
@@ -80,8 +82,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                   Expanded(
                     child: TabBarView(
                       children: [
-                        Icon(Icons.directions_car),
-                        Icon(Icons.directions_transit),
+                        MenuTab(),
+                        ReviewsTab(),
                       ],
                     ),
                   ),

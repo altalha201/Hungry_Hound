@@ -28,6 +28,13 @@ ThemeData hungryHoundTheme() {
     drawerTheme: const DrawerThemeData(
       width: 250,
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        )
+      ),
+    )
   );
 }
 

@@ -34,7 +34,27 @@ ThemeData hungryHoundTheme() {
           borderRadius: BorderRadius.circular(10),
         )
       ),
-    )
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderSide: const BorderSide(color: colorPrimaryGreen, width: 2.0),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: colorPrimaryGreen, width: 2.0),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Colors.red, width: 2.0),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      fillColor: Colors.white,
+      contentPadding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+      hintStyle: const TextStyle(fontSize: 16.0, color: Colors.grey),
+    ),
+    checkboxTheme: CheckboxThemeData(
+        fillColor: MaterialStateColor.resolveWith((states) => colorPrimaryGreen)
+    ),
   );
 }
 

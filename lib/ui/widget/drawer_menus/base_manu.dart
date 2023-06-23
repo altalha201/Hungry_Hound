@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../screens/auth_screens/create_account_screen.dart';
+import '../../screens/auth_screens/login_screen.dart';
 import '../../utils/application_colors.dart';
 
 class BaseManu extends StatelessWidget {
@@ -41,12 +44,24 @@ class BaseManu extends StatelessWidget {
                   )),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                Get.to(const LoginScreen());
+              },
               leading: const Icon(
                 Icons.login_sharp,
                 color: colorPrimaryGreen,
               ),
               title: const Text("Sign in"),
+            ),
+            ListTile(
+              onTap: () {
+                Get.to(const CreateAccountScreen());
+              },
+              leading: const Icon(
+                Icons.create_sharp,
+                color: colorPrimaryGreen,
+              ),
+              title: const Text("Create account"),
             )
           ],
         ),

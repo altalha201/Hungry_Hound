@@ -52,7 +52,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   DualTextButton(
                     onTap: () {
-                      Get.off(const CreateAccountScreen());
+                      Get.off(CreateAccountScreen());
                     },
                     question: "Have no account?",
                     todo: "Create account",

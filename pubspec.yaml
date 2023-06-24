@@ -20,6 +20,7 @@ dependencies:
   firebase_auth: ^4.6.3
   firebase_storage: ^11.2.3
   loading_animation_widget: ^1.2.0+4
+  image_picker: ^0.8.9
 
 dev_dependencies:
   flutter_test:

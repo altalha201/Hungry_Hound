@@ -45,7 +45,7 @@ class BaseManu extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                Get.to(const LoginScreen());
+                Get.to(LoginScreen());
               },
               leading: const Icon(
                 Icons.login_sharp,

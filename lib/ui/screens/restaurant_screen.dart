@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../data/model/restaurant_model.dart';
 import '../utils/application_colors.dart';
-import '../utils/other_utils.dart';
+import '../utils/util_functions.dart';
 import 'restaurant_tabs/menu_tab.dart';
 import 'restaurant_tabs/reviews_tab.dart';
 
 class RestaurantScreen extends StatefulWidget {
-  const RestaurantScreen({Key? key}) : super(key: key);
+  const RestaurantScreen({Key? key, required this.restaurant}) : super(key: key);
+
+  final RestaurantModel restaurant;
 
   @override
   State<RestaurantScreen> createState() => _RestaurantScreenState();
@@ -23,13 +26,13 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
           iconTheme: const IconThemeData(color: Colors.white),
           elevation: 0,
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage(restaurantTheme),
-                  fit: BoxFit.fill,
+                  image: MemoryImage(getBase64Image(widget.restaurant.img ?? "")),
+                  fit: BoxFit.cover,
                   opacity: 0.6,
                   colorFilter:
-                      ColorFilter.mode(Colors.black, BlendMode.lighten)),
+                      const ColorFilter.mode(Colors.black, BlendMode.lighten)),
             ),
           ),
           systemOverlayStyle: const SystemUiOverlayStyle(
@@ -43,20 +46,20 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  "Restaurant Name",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                  widget.restaurant.restaurantName ?? "",
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: double.infinity,
                   height: 4.0,
                 ),
                 Text(
-                  "Location",
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                  widget.restaurant.location ?? "Location",
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16.0,
                 ),
               ],

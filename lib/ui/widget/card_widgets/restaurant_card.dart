@@ -17,7 +17,7 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(const RestaurantScreen());
+        Get.to(RestaurantScreen(restaurant: restaurant,));
       },
       borderRadius: const BorderRadius.all(Radius.circular(12.0)),
       child: Column(

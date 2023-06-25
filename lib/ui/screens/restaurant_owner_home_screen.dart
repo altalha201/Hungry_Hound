@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../controller/cache_controller.dart';
 import '../controller/get_user_controller.dart';
 import '../utils/application_colors.dart';
 import '../utils/util_functions.dart';
@@ -39,6 +42,7 @@ class _RestaurantOwnerHomeScreenState extends State<RestaurantOwnerHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log(Get.find<CacheController>().userId.toString());
     return Scaffold(
       key: _scaffoldKey,
       body: GetBuilder<GetUserController>(builder: (userController) {
@@ -164,7 +168,7 @@ class _RestaurantOwnerHomeScreenState extends State<RestaurantOwnerHomeScreen> {
         );
       }),
       drawer: RestaurantOwnerMenu(
-        restaurantID: Get.find<GetUserController>().restaurant.restaurantId!,
+        restaurantID: Get.find<CacheController>().userId ?? "",
       ),
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(

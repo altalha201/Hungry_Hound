@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controller/cache_controller.dart';
 import '../controller/get_user_controller.dart';
 import '../utils/application_colors.dart';
 import '../utils/util_functions.dart';
-import '../widget/app_bars/logo_app_bar.dart';
+import '../widget/drawer_menus/restaurant_owner_menu.dart';
 import '../widget/loading_widget.dart';
+import '../widget/text_logo.dart';
 import 'owner_tabs/menu_tab.dart';
 import 'owner_tabs/order_tab.dart';
 
@@ -26,6 +26,8 @@ class _RestaurantOwnerHomeScreenState extends State<RestaurantOwnerHomeScreen> {
 
   int _selected = 0;
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     WidgetsFlutterBinding.ensureInitialized()
@@ -38,97 +40,132 @@ class _RestaurantOwnerHomeScreenState extends State<RestaurantOwnerHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: logoAppBar(),
+      key: _scaffoldKey,
       body: GetBuilder<GetUserController>(builder: (userController) {
         if (userController.gettingUser) {
           return const LoadingWidget();
         }
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        return Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      color: colorPrimaryGreen,
-                      width: 2,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: MemoryImage(
+                          getBase64Image(userController.restaurant.img ?? "")),
+                      fit: BoxFit.cover,
+                      opacity: 0.6,
+                      colorFilter: const ColorFilter.mode(
+                          Colors.black, BlendMode.lighten),
                     ),
-                    borderRadius: BorderRadius.circular(10)),
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    Ink(
-                      height: 100,
-                      width: 150,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                              image: MemoryImage(getBase64Image(userController.restaurant.img!)),
-                              fit: BoxFit.cover)),
-                    ),
-                    const SizedBox(
-                      width: 8.0,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+                )
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(35),
+                        topLeft: Radius.circular(35),
+                      )),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: AppBar().preferredSize.height,
+                        child: Card(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(35),
+                              topLeft: Radius.circular(35),
+                            ),
+                          ),
+                          elevation: 3.0,
+                          shadowColor: colorPrimaryGreen.withOpacity(0.2),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: IconButton(
+                                  icon: const Icon(
+                                    Icons.menu,
+                                  ),
+                                  onPressed: () {
+                                    _scaffoldKey.currentState!.openDrawer();
+                                  },
+                                ),
+                              ),
+                              const TextLogo()
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
                           children: [
+                            const SizedBox(
+                              width: 8.0,
+                            ),
                             Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   userController.restaurant.restaurantName ??
                                       "",
-                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                      color: colorPrimaryBlack),
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 8.0,
                                 ),
-                                Text(
-                                  userController.restaurant.location ?? "",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.grey.shade500),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.location_on,
+                                      size: 18.0,
+                                      color: colorPrimaryBlack,
+                                    ),
+                                    const SizedBox(
+                                      width: 16.0,
+                                    ),
+                                    Text(userController.restaurant.location ??
+                                        "")
+                                  ],
                                 ),
                               ],
                             ),
-                            // const Spacer(),
+                            const Spacer(),
                             IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: colorPrimaryGreen,
-                                )),
+                              onPressed: () {},
+                              icon: const Icon(Icons.edit_outlined),
+                            ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 8.0,
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              Get.find<CacheController>().logout();
-                            }, child: const Text("Logout"))
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Expanded(child: bodyItem[_selected]),
+                      ),
+                      Expanded(child: bodyItem.elementAt(_selected)),
+                    ],
+                  ),
+                )
+              ],
+            )
           ],
         );
       }),
+      drawer: RestaurantOwnerMenu(
+        restaurantID: Get.find<GetUserController>().restaurant.restaurantId!,
+      ),
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(45),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hungry_hound/ui/controller/restaurant_list_controller.dart';
 
 import '../controller/get_user_controller.dart';
 import '../widget/card_widgets/restaurant_card.dart';
@@ -15,11 +16,12 @@ class CustomerHomeScreen extends StatefulWidget {
 }
 
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
-
   @override
   void initState() {
-    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timeStamp) async {
+    WidgetsFlutterBinding.ensureInitialized()
+        .addPostFrameCallback((timeStamp) async {
       await Get.find<GetUserController>().getCustomer();
+      await Get.find<RestaurantListController>().getRestaurantList();
     });
     super.initState();
   }
@@ -40,26 +42,28 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           ),
         ],
       ),
-      drawer: GetBuilder<GetUserController>(
-        builder: (userController) {
-          if (userController.gettingUser) {
-            return const LoadingWidget();
-          }
-          return CustomerMenu(customer: userController.customer,);
+      drawer: GetBuilder<GetUserController>(builder: (userController) {
+        if (userController.gettingUser) {
+          return const LoadingWidget();
         }
-      ),
+        return CustomerMenu(
+          customer: userController.customer,
+        );
+      }),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: const [
-              RestaurantCard(),
-              RestaurantCard(),
-              RestaurantCard(),
-              RestaurantCard(),
-            ],
-          ),
-        ),
+        child: GetBuilder<RestaurantListController>(builder: (listController) {
+          if (listController.gettingRestaurants) {
+            return const LoadingWidget();
+          }
+          return SingleChildScrollView(
+            child: Column(
+              children: listController.restaurants
+                  .map((restaurant) => RestaurantCard(restaurant: restaurant,))
+                  .toList(),
+            ),
+          );
+        }),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'ui/controller/auth_controller.dart';
 import 'ui/controller/cache_controller.dart';
 import 'ui/controller/get_user_controller.dart';
 import 'ui/controller/profile_create_controller.dart';
+import 'ui/controller/restaurant_list_controller.dart';
 
 class StoreBindings extends Bindings {
   @override
@@ -12,5 +13,7 @@ class StoreBindings extends Bindings {
     Get.put(CacheController());
     Get.put(GetUserController());
     Get.put(ProfileCreateController());
+    Get.put(RestaurantListController());
+
   }
 }

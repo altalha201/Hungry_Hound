@@ -37,7 +37,7 @@ class ImageSelectingButton extends StatelessWidget {
                         children: [
                           ListTile(
                             onTap: () async {
-                              final pickedImg = await ImagePicker().pickImage(source: ImageSource.camera, maxHeight: 288, maxWidth: 512);
+                              final pickedImg = await ImagePicker().pickImage(source: ImageSource.camera, maxHeight: 576, maxWidth: 1024);
                               if (pickedImg != null) {
                                 imgController.text = pickedImg.name;
                                 onPicked(File(pickedImg.path));
@@ -49,7 +49,7 @@ class ImageSelectingButton extends StatelessWidget {
                           ),
                           ListTile(
                             onTap: () async {
-                              final pickedImg = await ImagePicker().pickImage(source: ImageSource.gallery, maxHeight: 288, maxWidth: 512);
+                              final pickedImg = await ImagePicker().pickImage(source: ImageSource.gallery, maxHeight: 576, maxWidth: 1024);
                               if (pickedImg != null) {
                                 imgController.text = pickedImg.name;
                                 onPicked(File(pickedImg.path));

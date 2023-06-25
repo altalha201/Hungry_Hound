@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hungry_hound/ui/controller/restaurant_list_controller.dart';
+import 'package:hungry_hound/ui/widget/loading_widget.dart';
 import 'package:hungry_hound/ui/widget/text_logo.dart';
 
 import '../widget/card_widgets/restaurant_card.dart';
@@ -13,6 +16,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    WidgetsFlutterBinding.ensureInitialized()
+        .addPostFrameCallback((timeStamp) async {
+      await Get.find<RestaurantListController>().getRestaurantList();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -21,16 +33,19 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: const BaseManu(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: const [
-              RestaurantCard(),
-              RestaurantCard(),
-              RestaurantCard(),
-              RestaurantCard(),
-            ],
-          ),
-        ),
+        child: GetBuilder<RestaurantListController>(builder: (listController) {
+          if (listController.gettingRestaurants) {
+            return const LoadingWidget();
+          }
+
+          return SingleChildScrollView(
+            child: Column(
+              children: listController.restaurants
+                  .map((restaurant) => RestaurantCard(restaurant: restaurant))
+                  .toList(),
+            ),
+          );
+        }),
       ),
     );
   }

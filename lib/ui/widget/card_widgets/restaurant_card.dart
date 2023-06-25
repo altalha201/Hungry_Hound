@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hungry_hound/ui/screens/restaurent_screen.dart';
 
+import '../../../data/model/restaurant_model.dart';
+import '../../screens/restaurant_screen.dart';
 import '../../utils/application_colors.dart';
-import '../../utils/other_utils.dart';
+import '../../utils/util_functions.dart';
 
 class RestaurantCard extends StatelessWidget {
   const RestaurantCard({
-    Key? key,
+    Key? key, required this.restaurant,
   }) : super(key: key);
+
+  final RestaurantModel restaurant;
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +25,10 @@ class RestaurantCard extends StatelessWidget {
           Ink(
             height: 150,
             width: double.infinity,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
               image: DecorationImage(
-                image: NetworkImage(restaurantTheme),
+                image: MemoryImage(getBase64Image(restaurant.img ?? "")),
                 fit: BoxFit.cover,
               ),
             ),
@@ -34,40 +37,40 @@ class RestaurantCard extends StatelessWidget {
             height: 8.0,
           ),
           Row(
-            children: const [
+            children: [
               Text(
-                "Restaurant Name",
-                style: TextStyle(
+                restaurant.restaurantName ?? "",
+                style: const TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              Spacer(),
-              Icon(
+              const Spacer(),
+              const Icon(
                 Icons.star,
                 color: Colors.amberAccent,
                 size: 16,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 8.0,
               ),
-              Text("4.0"),
+              Text("${restaurant.ratting ?? 0.0}"),
             ],
           ),
           const SizedBox(
             height: 8.0,
           ),
           Row(
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.location_on,
                 size: 18.0,
                 color: colorPrimaryBlack,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 16.0,
               ),
-              Text("Location")
+              Text(restaurant.location ?? "")
             ],
           ),
           const SizedBox(height: 16.0,)

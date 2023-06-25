@@ -52,6 +52,9 @@ ThemeData hungryHoundTheme() {
       contentPadding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
       hintStyle: const TextStyle(fontSize: 16.0, color: Colors.grey),
     ),
+    iconTheme: const IconThemeData(
+      color: colorPrimaryGreen
+    ),
     checkboxTheme: CheckboxThemeData(
         fillColor: MaterialStateColor.resolveWith((states) => colorPrimaryGreen)
     ),

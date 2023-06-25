@@ -101,6 +101,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                           restaurantId: Get.find<CacheController>().userId,
                           location: addressET.text,
                           img: base64Img,
+                          ratting: 0.0,
                         );
                         response =
                             await controller.createRestaurant(restaurant);

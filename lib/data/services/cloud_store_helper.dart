@@ -73,4 +73,15 @@ class CloudStorageHelper {
       return ResponseModel(isSuccessful: false);
     }
   }
+
+  Future<ResponseModel> getRestaurants() async {
+    final ref = cloudRef.collection("restaurants");
+    List<RestaurantModel> returnList = [];
+    await ref.get().then((documents) {
+      for(var doc in documents.docs) {
+        returnList.add(RestaurantModel.fromJson(doc.data()));
+      }
+    });
+    return ResponseModel(isSuccessful: true, returnData: returnList);
+  }
 }

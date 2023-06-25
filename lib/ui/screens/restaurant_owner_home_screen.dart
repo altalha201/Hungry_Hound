@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:hungry_hound/ui/screens/owner_tabs/menu_tab.dart';
-import 'package:hungry_hound/ui/screens/owner_tabs/order_tab.dart';
-import 'package:hungry_hound/ui/utils/other_utils.dart';
+import 'package:get/get.dart';
 
+import '../controller/cache_controller.dart';
+import '../controller/get_user_controller.dart';
 import '../utils/application_colors.dart';
+import '../utils/util_functions.dart';
 import '../widget/app_bars/logo_app_bar.dart';
+import '../widget/loading_widget.dart';
+import 'owner_tabs/menu_tab.dart';
+import 'owner_tabs/order_tab.dart';
 
 class RestaurantOwnerHomeScreen extends StatefulWidget {
   const RestaurantOwnerHomeScreen({Key? key}) : super(key: key);
@@ -23,91 +27,109 @@ class _RestaurantOwnerHomeScreenState extends State<RestaurantOwnerHomeScreen> {
   int _selected = 0;
 
   @override
+  void initState() {
+    WidgetsFlutterBinding.ensureInitialized()
+        .addPostFrameCallback((timeStamp) async {
+      await Get.find<GetUserController>().getRestaurant();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: logoAppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    color: colorPrimaryGreen,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.circular(10)),
+      body: GetBuilder<GetUserController>(builder: (userController) {
+        if (userController.gettingUser) {
+          return const LoadingWidget();
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Ink(
-                    height: 100,
-                    width: 150,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: const DecorationImage(
-                            image: NetworkImage(restaurantTheme),
-                            fit: BoxFit.cover)),
-                  ),
-                  const SizedBox(
-                    width: 8.0,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Restaurant Name",
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: colorPrimaryBlack),
-                              ),
-                              const SizedBox(
-                                height: 8.0,
-                              ),
-                              Text(
-                                "Restaurant Address",
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.grey.shade500),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 8.0,
-                          ),
-                          IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.edit,
-                                color: colorPrimaryGreen,
-                              )),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
-                      TextButton(onPressed: () {}, child: const Text("Logout"))
-                    ],
-                  )
-                ],
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: colorPrimaryGreen,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(10)),
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Ink(
+                      height: 100,
+                      width: 150,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                              image: MemoryImage(getBase64Image(userController.restaurant.img!)),
+                              fit: BoxFit.cover)),
+                    ),
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  userController.restaurant.restaurantName ??
+                                      "",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      color: colorPrimaryBlack),
+                                ),
+                                const SizedBox(
+                                  height: 8.0,
+                                ),
+                                Text(
+                                  userController.restaurant.location ?? "",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.grey.shade500),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 8.0,
+                            ),
+                            IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: colorPrimaryGreen,
+                                )),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              Get.find<CacheController>().logout();
+                            }, child: const Text("Logout"))
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          Expanded(child: bodyItem[_selected]),
-        ],
-      ),
+            Expanded(child: bodyItem[_selected]),
+          ],
+        );
+      }),
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(45),

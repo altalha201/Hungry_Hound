@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../utils/application_colors.dart';
 
 class ImageSelectingButton extends StatelessWidget {
-  const ImageSelectingButton({
-    Key? key, this.onPressed, this.textController,
+  ImageSelectingButton({
+    Key? key, required this.onPicked,
   }) : super(key: key);
 
-  final VoidCallback? onPressed;
-  final TextEditingController? textController;
+  final Function(XFile? picked) onPicked;
+  final TextEditingController imgController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +28,49 @@ class ImageSelectingButton extends StatelessWidget {
                             topLeft: Radius.circular(5),
                             bottomLeft: Radius.circular(5),
                           ))),
-                  onPressed: onPressed,
+                  onPressed: () async {
+                    await Get.defaultDialog(
+                      title: "Pick Image form",
+                      content: Column(
+                        children: [
+                          ListTile(
+                            onTap: () async {
+                              final pickedImg = await ImagePicker().pickImage(source: ImageSource.camera);
+                              if (pickedImg != null) {
+                                imgController.text = pickedImg.name;
+                                onPicked(pickedImg);
+                              }
+                              Get.back();
+                            },
+                            leading:  const Icon(Icons.camera_alt_outlined, size: 34, color: colorPrimaryGreen,),
+                            title: const Text("Camera"),
+                          ),
+                          ListTile(
+                            onTap: () async {
+                              final pickedImg = await ImagePicker().pickImage(source: ImageSource.gallery);
+                              if (pickedImg != null) {
+                                imgController.text = pickedImg.name;
+                                onPicked(pickedImg);
+                              }
+                              Get.back();
+                            },
+                            leading:  const Icon(Icons.image_outlined, size: 34, color: colorPrimaryGreen,),
+                            title: const Text("Gallery"),
+                          )
+                        ],
+                      ),
+                      textCancel: "Cancel",
+                      onCancel: () {
+                        Get.back();
+                      }
+                    );
+                  },
                   child: const Text("Choose a Photo"))),
           Expanded(
             child: SizedBox(
               height: 55,
               child: TextFormField(
-                controller: textController,
+                controller: imgController,
                 decoration: const InputDecoration(
                     hintText: "Selected Image",
                     enabled: false,

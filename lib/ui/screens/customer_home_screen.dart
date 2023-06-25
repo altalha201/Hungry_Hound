@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../controller/get_user_controller.dart';
 import '../widget/card_widgets/restaurant_card.dart';
 import '../widget/drawer_menus/customer_menu.dart';
+import '../widget/loading_widget.dart';
 import '../widget/text_logo.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
@@ -12,6 +15,15 @@ class CustomerHomeScreen extends StatefulWidget {
 }
 
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
+
+  @override
+  void initState() {
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timeStamp) async {
+      await Get.find<GetUserController>().getCustomer();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +40,14 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           ),
         ],
       ),
-      drawer: const CustomerMenu(),
+      drawer: GetBuilder<GetUserController>(
+        builder: (userController) {
+          if (userController.gettingUser) {
+            return const LoadingWidget();
+          }
+          return CustomerMenu(customer: userController.customer,);
+        }
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(

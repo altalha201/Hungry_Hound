@@ -3,8 +3,9 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../controller/cache_controller.dart';
+import '../controller/get_user_controller.dart';
 import '../utils/application_colors.dart';
-// import 'restaurant_owner_home_screen.dart';
+import 'restaurant_owner_home_screen.dart';
 import 'customer_home_screen.dart';
 import 'home_screen.dart';
 
@@ -19,14 +20,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 3)).then((value) {
+    Future.delayed(const Duration(seconds: 3)).then((value) async {
       Get.find<CacheController>().getUserID();
       if(Get.find<CacheController>().isLogin()) {
-        Get.offAll(const CustomerHomeScreen());
+        await Get.find<GetUserController>().userIsCustomer(Get.find<CacheController>().userId!).then((value) {
+          if(value) {
+            Get.offAll(const CustomerHomeScreen());
+          } else {
+            Get.offAll(const RestaurantOwnerHomeScreen());
+          }
+        });
       } else {
         Get.offAll(const HomeScreen());
       }
-      // Get.offAll(const RestaurantOwnerHomeScreen());
     });
     super.initState();
   }

@@ -1,8 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:image_picker/image_picker.dart';
-
-Future<String> convertToBase64String(XFile image) async {
+Future<String> convertToBase64String(File image) async {
   List<int> imageBytes = await image.readAsBytes();
   return base64Encode(imageBytes);
 }

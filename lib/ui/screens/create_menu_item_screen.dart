@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../widget/app_bars/logo_app_bar.dart';
 import '../widget/button_widgets/image_selecting_button.dart';
@@ -45,7 +46,7 @@ class CreateMenuItemScreen extends StatelessWidget {
                 height: 8.0,
               ),
               ImageSelectingButton(
-                onPicked: (XFile? picked) {  },
+                onPicked: (File? picked) {  },
               ),
               const SizedBox(
                 height: 8.0,

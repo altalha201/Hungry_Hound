@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,7 +11,7 @@ class ImageSelectingButton extends StatelessWidget {
     Key? key, required this.onPicked,
   }) : super(key: key);
 
-  final Function(XFile? picked) onPicked;
+  final Function(File? picked) onPicked;
   final TextEditingController imgController = TextEditingController();
 
   @override
@@ -35,10 +37,10 @@ class ImageSelectingButton extends StatelessWidget {
                         children: [
                           ListTile(
                             onTap: () async {
-                              final pickedImg = await ImagePicker().pickImage(source: ImageSource.camera);
+                              final pickedImg = await ImagePicker().pickImage(source: ImageSource.camera, maxHeight: 288, maxWidth: 512);
                               if (pickedImg != null) {
                                 imgController.text = pickedImg.name;
-                                onPicked(pickedImg);
+                                onPicked(File(pickedImg.path));
                               }
                               Get.back();
                             },
@@ -47,10 +49,10 @@ class ImageSelectingButton extends StatelessWidget {
                           ),
                           ListTile(
                             onTap: () async {
-                              final pickedImg = await ImagePicker().pickImage(source: ImageSource.gallery);
+                              final pickedImg = await ImagePicker().pickImage(source: ImageSource.gallery, maxHeight: 288, maxWidth: 512);
                               if (pickedImg != null) {
                                 imgController.text = pickedImg.name;
-                                onPicked(pickedImg);
+                                onPicked(File(pickedImg.path));
                               }
                               Get.back();
                             },

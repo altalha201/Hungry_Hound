@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../data/model/customer_model.dart';
 import '../../../data/model/restaurant_model.dart';
@@ -26,7 +27,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   final TextEditingController addressET = TextEditingController();
   final TextEditingController photoController = TextEditingController();
 
-  XFile? pickedImage;
+  File? pickedImage;
   String? base64Img;
 
   @override
@@ -42,7 +43,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                 height: 16.0,
               ),
               ImageSelectingButton(
-                onPicked: (XFile? picked) {
+                onPicked: (File? picked) {
                   pickedImage = picked;
                 },
               ),

@@ -75,6 +75,7 @@ class _RestaurantOwnerHomeScreenState extends State<RestaurantOwnerHomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -102,9 +103,7 @@ class _RestaurantOwnerHomeScreenState extends State<RestaurantOwnerHomeScreen> {
                                 ),
                               ],
                             ),
-                            const SizedBox(
-                              width: 8.0,
-                            ),
+                            // const Spacer(),
                             IconButton(
                                 onPressed: () {},
                                 icon: const Icon(

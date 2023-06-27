@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hungry_hound/ui/controller/menu_item_controller.dart';
+import 'package:hungry_hound/ui/widget/loading_widget.dart';
 
 import '../../widget/card_widgets/menu_item_card.dart';
 import '../create_menu_item_screen.dart';
@@ -17,19 +19,20 @@ class _MenuTabState extends State<MenuTab> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: const [
-            MenuItemCard(
-              fromOwner: true,
-            ),
-            MenuItemCard(
-              fromOwner: true,
-            ),
-            MenuItemCard(
-              fromOwner: true,
-            ),
-          ],
-        ),
+        child: GetBuilder<MenuItemController>(builder: (controller) {
+          if (controller.gettingItems) {
+            return const LoadingWidget();
+          }
+          return SingleChildScrollView(
+            child: Column(
+                children: controller.menuItems
+                    .map((item) => MenuItemCard(
+                          fromOwner: true,
+                          item: item,
+                        ))
+                    .toList()),
+          );
+        }),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../controller/cache_controller.dart';
 import '../controller/get_user_controller.dart';
+import '../controller/menu_item_controller.dart';
 import '../utils/application_colors.dart';
 import '../utils/util_functions.dart';
 import '../widget/drawer_menus/restaurant_owner_menu.dart';
@@ -36,6 +37,7 @@ class _RestaurantOwnerHomeScreenState extends State<RestaurantOwnerHomeScreen> {
     WidgetsFlutterBinding.ensureInitialized()
         .addPostFrameCallback((timeStamp) async {
       await Get.find<GetUserController>().getRestaurant();
+      await Get.find<MenuItemController>().getItems(Get.find<CacheController>().userId!);
     });
     super.initState();
   }

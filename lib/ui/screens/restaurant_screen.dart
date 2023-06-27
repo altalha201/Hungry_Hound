@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:hungry_hound/ui/controller/menu_item_controller.dart';
 
 import '../../data/model/restaurant_model.dart';
 import '../utils/application_colors.dart';
@@ -17,6 +19,15 @@ class RestaurantScreen extends StatefulWidget {
 }
 
 class _RestaurantScreenState extends State<RestaurantScreen> {
+
+  @override
+  void initState() {
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timeStamp) {
+      Get.find<MenuItemController>().getItems(widget.restaurant.restaurantId ?? "");
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

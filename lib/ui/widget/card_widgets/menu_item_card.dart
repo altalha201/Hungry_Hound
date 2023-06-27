@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../data/model/menu_item_model.dart';
 import '../../screens/food_item_details_screen.dart';
 import '../../utils/application_colors.dart';
-import '../../utils/other_utils.dart';
+import '../../utils/util_functions.dart';
 
 class MenuItemCard extends StatelessWidget {
   const MenuItemCard({
-    Key? key, this.fromOwner,
+    Key? key, this.fromOwner, this.item,
   }) : super(key: key);
 
   final bool? fromOwner;
+  final MenuItemModel? item;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(const FoodItemDetailsScreen());
+        Get.to(FoodItemDetailsScreen(item: item!, fromOwner: fromOwner,));
       },
       borderRadius: BorderRadius.circular(20),
       child: Padding(
@@ -34,12 +36,12 @@ class MenuItemCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Food Item",
-                          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                        Text(
+                          item?.itemName ?? "Food Item",
+                          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18,),
                         ),
                         Text(
-                          "1 Pcs.",
+                          "${item?.itemQuantity ?? 1} Pcs.",
                           style: TextStyle(
                               fontWeight: FontWeight.w200,
                               fontSize: 14,
@@ -48,9 +50,9 @@ class MenuItemCard extends StatelessWidget {
                         const SizedBox(
                           height: 8.0,
                         ),
-                        const Text(
-                          "120 Tk.",
-                          style: TextStyle(
+                        Text(
+                          "${item?.itemPrice ?? 0.0} Tk.",
+                          style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
                           ),
@@ -67,8 +69,8 @@ class MenuItemCard extends StatelessWidget {
                         width: 100,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            image: const DecorationImage(
-                              image: NetworkImage(foodTheme),
+                            image: DecorationImage(
+                              image: MemoryImage(getBase64Image(item?.itemImg ?? "")),
                               fit: BoxFit.cover,
                             )
                         ),

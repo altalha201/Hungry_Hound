@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../model/customer_model.dart';
+import '../model/menu_item_model.dart';
 import '../model/response_model.dart';
 import '../model/restaurant_model.dart';
 
@@ -45,7 +46,7 @@ class CloudStorageHelper {
     });
     return ResponseModel(isSuccessful: true, returnData: role);
   }
-  
+
   Future<ResponseModel> getRestaurant(String id) async {
     final ref = cloudRef.collection("restaurants").doc(id);
     late final Map<String, dynamic>? data;
@@ -78,10 +79,37 @@ class CloudStorageHelper {
     final ref = cloudRef.collection("restaurants");
     List<RestaurantModel> returnList = [];
     await ref.get().then((documents) {
-      for(var doc in documents.docs) {
+      for (var doc in documents.docs) {
         returnList.add(RestaurantModel.fromJson(doc.data()));
       }
     });
     return ResponseModel(isSuccessful: true, returnData: returnList);
+  }
+
+  Future<ResponseModel> createItem(MenuItemModel item) async {
+    await cloudRef
+        .collection("restaurant_items")
+        .doc("menu")
+        .collection(item.restaurantId!)
+        .doc(item.itemId)
+        .set(item.toJson());
+
+    return ResponseModel(isSuccessful: true);
+  }
+
+  Future<ResponseModel> getMenuItemByRestaurantID(String restaurantID) async {
+    final ref = cloudRef
+        .collection("restaurant_items")
+        .doc("menu")
+        .collection(restaurantID);
+
+    List<MenuItemModel> items = [];
+    await ref.get().then((documents) {
+      for (var docs in documents.docs) {
+        items.add(MenuItemModel.fromJson(docs.data()));
+      }
+    });
+
+    return ResponseModel(isSuccessful: true, returnData: items);
   }
 }

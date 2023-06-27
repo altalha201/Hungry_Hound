@@ -61,7 +61,7 @@ class RestaurantOwnerMenu extends StatelessWidget {
               leading: const Icon(Icons.logout),
               title: const Text("Logout"),
             ),
-            Text(restaurantID),
+            // Text(restaurantID),
           ],
         ),
       ),

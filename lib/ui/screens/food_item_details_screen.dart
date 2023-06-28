@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hungry_hound/ui/controller/cache_controller.dart';
-import 'package:hungry_hound/ui/controller/wish_list_controller.dart';
-import 'package:hungry_hound/ui/screens/auth_screens/login_screen.dart';
 
+import '../../data/model/cart_item_model.dart';
 import '../../data/model/menu_item_model.dart';
+import '../controller/cache_controller.dart';
+import '../controller/cart_controller.dart';
+import '../controller/wish_list_controller.dart';
 import '../utils/application_colors.dart';
 import '../utils/util_functions.dart';
+import '../widget/card_widgets/total_price_card.dart';
 import '../widget/item_stepper.dart';
+import '../widget/loading_widget.dart';
+import 'auth_screens/login_screen.dart';
 
 class FoodItemDetailsScreen extends StatefulWidget {
-  const FoodItemDetailsScreen({Key? key, required this.item, this.fromOwner}) : super(key: key);
+  const FoodItemDetailsScreen({Key? key, required this.item, this.fromOwner})
+      : super(key: key);
 
   final MenuItemModel item;
   final bool? fromOwner;
@@ -41,7 +46,8 @@ class _FoodItemDetailsScreenState extends State<FoodItemDetailsScreen> {
               image: MemoryImage(getBase64Image(widget.item.itemImg ?? "")),
               fit: BoxFit.cover,
               opacity: 0.6,
-              colorFilter: const ColorFilter.mode(Colors.black, BlendMode.lighten),
+              colorFilter:
+                  const ColorFilter.mode(Colors.black, BlendMode.lighten),
             )),
           ),
           Column(
@@ -104,30 +110,30 @@ class _FoodItemDetailsScreenState extends State<FoodItemDetailsScreen> {
                                 ),
                                 Text(
                                   "${widget.item.itemStar}",
-                                  style: const TextStyle(fontWeight: FontWeight.w500),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 const Spacer(),
                                 Visibility(
                                   visible: !(widget.fromOwner ?? false),
                                   child: IconButton(
                                     onPressed: () {
-                                      if (Get.find<CacheController>().isLogin()) {
-                                        Get.find<WishListController>().addToWishList(widget.item);
-                                        Get.showSnackbar(
-                                            const GetSnackBar(
-                                              title: "Success",
-                                              message: "Item add to wishlist",
-                                              duration: Duration(seconds: 3),
-                                            )
-                                        );
+                                      if (Get.find<CacheController>()
+                                          .isLogin()) {
+                                        Get.find<WishListController>()
+                                            .addToWishList(widget.item);
+                                        Get.showSnackbar(const GetSnackBar(
+                                          title: "Success",
+                                          message: "Item add to wishlist",
+                                          duration: Duration(seconds: 3),
+                                        ));
                                       } else {
-                                        Get.showSnackbar(
-                                          const GetSnackBar(
-                                            title: "Login",
-                                            message: "First login to create a wishlist",
-                                            duration: Duration(seconds: 3),
-                                          )
-                                        );
+                                        Get.showSnackbar(const GetSnackBar(
+                                          title: "Login",
+                                          message:
+                                              "First login to create a wishlist",
+                                          duration: Duration(seconds: 3),
+                                        ));
                                         Get.to(LoginScreen());
                                       }
                                     },
@@ -166,7 +172,9 @@ class _FoodItemDetailsScreenState extends State<FoodItemDetailsScreen> {
                                 const Spacer(),
                                 Visibility(
                                   visible: !(widget.fromOwner ?? false),
-                                  replacement: const SizedBox(height: 24.0,),
+                                  replacement: const SizedBox(
+                                    height: 24.0,
+                                  ),
                                   child: ItemStepper(
                                     onValueChange: (int currentValue) {
                                       setState(() {
@@ -197,40 +205,54 @@ class _FoodItemDetailsScreenState extends State<FoodItemDetailsScreen> {
                     ),
                     Visibility(
                       visible: !(widget.fromOwner ?? false),
-                      child: Container(
-                        height: 100,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 16.0, horizontal: 32.0),
-                        decoration: BoxDecoration(
-                          color: colorPrimaryGreen.withOpacity(0.4),
-                          borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(25),
-                              topLeft: Radius.circular(25)),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Total Price",
-                                  style: TextStyle(
-                                      fontSize: 14, fontWeight: FontWeight.w400),
-                                ),
-                                Text(
-                                  "${_itemPrice * _itemCount} /=",
-                                  style: const TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.w600),
-                                )
-                              ],
-                            ),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: const Text("Add to Cart"),
-                            )
-                          ],
+                      child: TotalPriceCard(
+                        itemPrice: _itemPrice,
+                        itemCount: _itemCount,
+                        child: GetBuilder<CartController>(
+                          builder: (controller) {
+                            if (controller.addingToCart) {
+                              return const LoadingWidget();
+                            }
+                            return ElevatedButton(
+                              onPressed: () {
+                                if(Get.find<CacheController>().isLogin()) {
+                                  final cartItem = CartItemModel(
+                                    customerId: Get.find<CacheController>().userId,
+                                    restaurantId: widget.item.restaurantId,
+                                    itemId: widget.item.itemId,
+                                    itemName: widget.item.itemName,
+                                    itemImg: widget.item.itemImg,
+                                    itemPrice: widget.item.itemPrice,
+                                    itemQuantity: _itemCount
+                                  );
+                                  controller.addToCart(cartItem).then((value) {
+                                    if (value) {
+                                      Get.showSnackbar(const GetSnackBar(
+                                        title: "Success",
+                                        message: "Item added to cart",
+                                        duration: Duration(seconds: 3),
+                                      ));
+                                    } else {
+                                      Get.showSnackbar(const GetSnackBar(
+                                        title: "Failed",
+                                        message: "Item add failed",
+                                        duration: Duration(seconds: 3),
+                                      ));
+                                    }
+                                  });
+                                } else {
+                                  Get.showSnackbar(const GetSnackBar(
+                                    title: "Login",
+                                    message:
+                                    "First login to create a cart",
+                                    duration: Duration(seconds: 3),
+                                  ));
+                                  Get.to(LoginScreen());
+                                }
+                              },
+                              child: const Text("Add to cart"),
+                            );
+                          }
                         ),
                       ),
                     )

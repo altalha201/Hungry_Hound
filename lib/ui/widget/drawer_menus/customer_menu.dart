@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../data/model/customer_model.dart';
 import '../../controller/cache_controller.dart';
+import '../../screens/cart_screen.dart';
 import '../../screens/customer_home_screen.dart';
 import '../../screens/wishlist_screen.dart';
 import '../../utils/application_colors.dart';
@@ -73,7 +74,7 @@ class CustomerMenu extends StatelessWidget {
               visible: !(fromCart ?? false),
               child: ListTile(
                 onTap: () {
-
+                  Get.to(const CartScreen());
                 },
                 leading: const Icon(Icons.shopping_bag_outlined),
                 title: const Text("My cart"),
@@ -92,10 +93,6 @@ class CustomerMenu extends StatelessWidget {
             const ListTile(
               leading: Icon(Icons.person),
               title: Text("Profile"),
-            ),
-            const ListTile(
-              leading: Icon(Icons.location_on_outlined),
-              title: Text("Address"),
             ),
             ListTile(
               onTap: () {

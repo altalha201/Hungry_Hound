@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hungry_hound/ui/screens/wishlist_screen.dart';
 
+import '../../screens/cart_screen.dart';
+import '../../screens/wishlist_screen.dart';
 import '../text_logo.dart';
 
 AppBar customerAppBar({bool? fromWishlist, bool? fromCart}) {
@@ -20,7 +21,9 @@ AppBar customerAppBar({bool? fromWishlist, bool? fromCart}) {
       Visibility(
         visible: !(fromCart ?? false),
         child: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.to(const CartScreen());
+          },
           icon: const Icon(Icons.shopping_bag_outlined),
         ),
       ),

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../model/cart_item_model.dart';
 import '../model/customer_model.dart';
 import '../model/menu_item_model.dart';
 import '../model/response_model.dart';
@@ -130,6 +131,27 @@ class CloudStorageHelper {
     await ref.get().then((documents) {
       for (var docs in documents.docs) {
         items.add(MenuItemModel.fromJson(docs.data()));
+      }
+    });
+    return ResponseModel(isSuccessful: true, returnData: items);
+  }
+
+  Future<ResponseModel> addToCart(CartItemModel cartItem) async {
+    await cloudRef
+        .collection("customer_item")
+        .doc("cart")
+        .collection(cartItem.customerId!)
+        .doc(cartItem.itemId)
+        .set(cartItem.toJson());
+    return ResponseModel(isSuccessful: true);
+  }
+
+  Future<ResponseModel> getCartList(String customerID) async {
+    final ref = cloudRef.collection("customer_item").doc("cart").collection(customerID);
+    List<CartItemModel> items = [];
+    await ref.get().then((documents) {
+      for (var docs in documents.docs) {
+        items.add(CartItemModel.fromJson(docs.data()));
       }
     });
     return ResponseModel(isSuccessful: true, returnData: items);

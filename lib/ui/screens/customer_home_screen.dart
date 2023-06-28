@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hungry_hound/ui/controller/restaurant_list_controller.dart';
 
 import '../controller/get_user_controller.dart';
+import '../controller/restaurant_list_controller.dart';
+import '../widget/app_bars/customer_app_bar.dart';
 import '../widget/card_widgets/restaurant_card.dart';
 import '../widget/drawer_menus/customer_menu.dart';
 import '../widget/loading_widget.dart';
-import '../widget/text_logo.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
   const CustomerHomeScreen({Key? key}) : super(key: key);
@@ -29,25 +29,14 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const TextLogo(),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.favorite_border_outlined),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.shopping_bag_outlined),
-          ),
-        ],
-      ),
+      appBar: customerAppBar(),
       drawer: GetBuilder<GetUserController>(builder: (userController) {
         if (userController.gettingUser) {
           return const LoadingWidget();
         }
         return CustomerMenu(
           customer: userController.customer,
+          fromHome: true,
         );
       }),
       body: Padding(

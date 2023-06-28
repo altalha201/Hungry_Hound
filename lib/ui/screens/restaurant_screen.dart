@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:hungry_hound/ui/controller/menu_item_controller.dart';
 
 import '../../data/model/restaurant_model.dart';
+import '../controller/menu_item_controller.dart';
 import '../utils/application_colors.dart';
 import '../utils/util_functions.dart';
 import 'restaurant_tabs/menu_tab.dart';

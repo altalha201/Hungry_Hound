@@ -3,16 +3,19 @@ import 'package:get/get.dart';
 
 import '../../../data/model/customer_model.dart';
 import '../../controller/cache_controller.dart';
+import '../../screens/customer_home_screen.dart';
+import '../../screens/wishlist_screen.dart';
 import '../../utils/application_colors.dart';
 import '../../utils/util_functions.dart';
 
 class CustomerMenu extends StatelessWidget {
   const CustomerMenu({
     Key? key,
-    required this.customer,
+    required this.customer, this.fromHome, this.fromWishlist, this.fromCart,
   }) : super(key: key);
 
   final CustomerModel customer;
+  final bool? fromHome, fromWishlist, fromCart;
 
   @override
   Widget build(BuildContext context) {
@@ -52,17 +55,39 @@ class CustomerMenu extends StatelessWidget {
                 ),
               ),
             ),
+            Visibility(
+              visible: !(fromHome ?? false),
+              child: ListTile(
+                onTap: () {
+                  Get.to(const CustomerHomeScreen());
+                },
+                leading: const Icon(Icons.home_outlined),
+                title: const Text("Home"),
+              ),
+            ),
             const ListTile(
               leading: Icon(Icons.list),
               title: Text("My Orders"),
             ),
-            const ListTile(
-              leading: Icon(Icons.shopping_bag_outlined),
-              title: Text("My cart"),
+            Visibility(
+              visible: !(fromCart ?? false),
+              child: ListTile(
+                onTap: () {
+
+                },
+                leading: const Icon(Icons.shopping_bag_outlined),
+                title: const Text("My cart"),
+              ),
             ),
-            const ListTile(
-              leading: Icon(Icons.favorite_border_outlined),
-              title: Text("My wishlist"),
+            Visibility(
+              visible: !(fromWishlist ?? false),
+              child: ListTile(
+                onTap: () {
+                  Get.to(const WishlistScreen());
+                },
+                leading: const Icon(Icons.favorite_border_outlined),
+                title: const Text("My wishlist"),
+              ),
             ),
             const ListTile(
               leading: Icon(Icons.person),

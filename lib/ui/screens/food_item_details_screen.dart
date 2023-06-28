@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hungry_hound/ui/controller/cache_controller.dart';
+import 'package:hungry_hound/ui/controller/wish_list_controller.dart';
+import 'package:hungry_hound/ui/screens/auth_screens/login_screen.dart';
 
 import '../../data/model/menu_item_model.dart';
 import '../utils/application_colors.dart';
@@ -106,7 +110,27 @@ class _FoodItemDetailsScreenState extends State<FoodItemDetailsScreen> {
                                 Visibility(
                                   visible: !(widget.fromOwner ?? false),
                                   child: IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      if (Get.find<CacheController>().isLogin()) {
+                                        Get.find<WishListController>().addToWishList(widget.item);
+                                        Get.showSnackbar(
+                                            const GetSnackBar(
+                                              title: "Success",
+                                              message: "Item add to wishlist",
+                                              duration: Duration(seconds: 3),
+                                            )
+                                        );
+                                      } else {
+                                        Get.showSnackbar(
+                                          const GetSnackBar(
+                                            title: "Login",
+                                            message: "First login to create a wishlist",
+                                            duration: Duration(seconds: 3),
+                                          )
+                                        );
+                                        Get.to(LoginScreen());
+                                      }
+                                    },
                                     icon: const Icon(
                                         Icons.favorite_border_outlined),
                                     splashColor: colorPrimaryBlack,

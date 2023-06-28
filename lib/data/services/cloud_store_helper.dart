@@ -112,4 +112,26 @@ class CloudStorageHelper {
 
     return ResponseModel(isSuccessful: true, returnData: items);
   }
+
+  Future<ResponseModel> addToWishList(String userID, MenuItemModel item) async {
+    await cloudRef
+        .collection("customer_item")
+        .doc("wishlist")
+        .collection(userID)
+        .doc(item.itemId)
+        .set(item.toJson());
+    return ResponseModel(isSuccessful: true);
+  }
+
+  Future<ResponseModel> getWishlist(String userID) async {
+    final ref =
+        cloudRef.collection("customer_item").doc("wishlist").collection(userID);
+    List<MenuItemModel> items = [];
+    await ref.get().then((documents) {
+      for (var docs in documents.docs) {
+        items.add(MenuItemModel.fromJson(docs.data()));
+      }
+    });
+    return ResponseModel(isSuccessful: true, returnData: items);
+  }
 }

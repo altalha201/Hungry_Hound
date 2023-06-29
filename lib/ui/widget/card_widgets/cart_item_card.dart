@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../../../data/model/cart_item_model.dart';
 import '../../utils/application_colors.dart';
 import '../../utils/util_functions.dart';
-import '../item_stepper.dart';
 
 class CartItemCard extends StatelessWidget {
   const CartItemCard({
-    Key? key, required this.item,
+    Key? key,
+    required this.item,
   }) : super(key: key);
 
   final CartItemModel item;
@@ -29,21 +29,21 @@ class CartItemCard extends StatelessWidget {
               height: 140,
               width: 120,
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
-                ),
-                image: DecorationImage(
-                  image: MemoryImage(getBase64Image(item.itemImg ?? "")),
-                  fit: BoxFit.cover
-                )
-              ),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                  ),
+                  image: DecorationImage(
+                      image: MemoryImage(
+                          getBase64Image(item.itemImg ?? "")),
+                      fit: BoxFit.cover)),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -62,9 +62,22 @@ class CartItemCard extends StatelessWidget {
                                   color: colorPrimaryBlack,
                                 ),
                               ),
-                              const SizedBox(height: 4.0,),
+                              const SizedBox(
+                                height: 4.0,
+                              ),
                               Text(
                                 "Price / item: \$ ${item.itemPrice ?? 0}",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 4.0,
+                              ),
+                              Text(
+                                "Quantity: ${item.itemQuantity ?? 0}",
                                 style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
@@ -83,21 +96,13 @@ class CartItemCard extends StatelessWidget {
                       ],
                     ),
                     // verticalSpace(8.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      // crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "\$ ${/*item.product?.price ??*/ 0}",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: colorPrimaryGreen,
-                          ),
-                        ),
-                        const Spacer(),
-                        ItemStepper(onValueChange: (int currentValue) {  },)
-                      ],
+                    Text(
+                      "Total Price: \$ ${(item.itemPrice ?? 0) * (item.itemQuantity ?? 1)}",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: colorPrimaryGreen,
+                      ),
                     ),
                   ],
                 ),

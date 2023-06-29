@@ -206,8 +206,7 @@ class _FoodItemDetailsScreenState extends State<FoodItemDetailsScreen> {
                     Visibility(
                       visible: !(widget.fromOwner ?? false),
                       child: TotalPriceCard(
-                        itemPrice: _itemPrice,
-                        itemCount: _itemCount,
+                        totalPrice: _itemPrice * _itemCount,
                         child: GetBuilder<CartController>(
                           builder: (controller) {
                             if (controller.addingToCart) {

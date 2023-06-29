@@ -5,13 +5,11 @@ import '../../utils/application_colors.dart';
 class TotalPriceCard extends StatelessWidget {
   const TotalPriceCard({
     Key? key,
-    required this.itemPrice,
-    required this.itemCount,
+    required this.totalPrice,
     this.fromCart, required this.child,
   }) : super(key: key);
 
-  final double itemPrice;
-  final int itemCount;
+  final double totalPrice;
   final bool? fromCart;
   final Widget child;
 
@@ -37,7 +35,7 @@ class TotalPriceCard extends StatelessWidget {
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
               ),
               Text(
-                "${itemPrice * itemCount} /=",
+                "$totalPrice /=",
                 style:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               )

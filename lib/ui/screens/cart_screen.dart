@@ -17,12 +17,17 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  // int _totalPrice = 0;
+  double _totalPrice = 0;
 
   @override
   void initState() {
-    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timeStamp) {
-      Get.find<CartController>().getCartList();
+    WidgetsFlutterBinding.ensureInitialized()
+        .addPostFrameCallback((timeStamp) async {
+      await Get.find<CartController>().getCartList();
+      for (var item in Get.find<CartController>().cartList) {
+        _totalPrice += ((item.itemQuantity ?? 1) * (item.itemPrice ?? 1));
+      }
+      setState(() {});
     });
     super.initState();
   }
@@ -46,16 +51,16 @@ class _CartScreenState extends State<CartScreen> {
                       return const LoadingWidget();
                     }
                     return ListView.builder(
-                      itemCount: controller.cartList.length,
+                        itemCount: controller.cartList.length,
                         itemBuilder: (context, index) {
-                      return CartItemCard(item: controller.cartList.elementAt(index));
-                    });
+                          return CartItemCard(
+                              item: controller.cartList.elementAt(index));
+                        });
                   },
                 )),
           ),
           TotalPriceCard(
-            itemPrice: 0,
-            itemCount: 1,
+            totalPrice: _totalPrice,
             child: ElevatedButton(
               onPressed: () {},
               child: const Text("Order Now"),

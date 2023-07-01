@@ -1,6 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hungry_hound/ui/controller/order_controller.dart';
 
 import '../../widget/card_widgets/owner_order_card.dart';
+import '../../widget/loading_widget.dart';
 
 class OrderTab extends StatefulWidget {
   const OrderTab({Key? key}) : super(key: key);
@@ -11,16 +16,38 @@ class OrderTab extends StatefulWidget {
 
 class _OrderTabState extends State<OrderTab> {
   @override
+  void initState() {
+    WidgetsFlutterBinding.ensureInitialized()
+        .addPostFrameCallback((timeStamp) async {
+      await Get.find<OrderController>().getRestaurantOrderList();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: const [
-          OwnerOrderCard(),
-          OwnerOrderCard(),
-          OwnerOrderCard(),
-        ],
-      ),
-    );
+        padding: const EdgeInsets.all(16.0),
+        child: GetBuilder<OrderController>(
+          builder: (controller) {
+            if (controller.gettingList) {
+              return const LoadingWidget();
+            }
+            return RefreshIndicator(
+              onRefresh: () async {
+                await Get.find<OrderController>().getRestaurantOrderList();
+              },
+              child: ListView.builder(
+                itemCount: controller.orderList.length,
+                itemBuilder: (context, index) {
+                  log(controller.orderList.length.toString());
+                  return OwnerOrderCard(
+                    model: controller.orderList.elementAt(index),
+                  );
+                },
+              ),
+            );
+          },
+        ));
   }
 }

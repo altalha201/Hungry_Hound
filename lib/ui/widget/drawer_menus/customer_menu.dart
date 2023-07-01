@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hungry_hound/ui/screens/customer_order_screen.dart';
 
 import '../../../data/model/customer_model.dart';
 import '../../controller/cache_controller.dart';
@@ -12,11 +13,15 @@ import '../../utils/util_functions.dart';
 class CustomerMenu extends StatelessWidget {
   const CustomerMenu({
     Key? key,
-    required this.customer, this.fromHome, this.fromWishlist, this.fromCart,
+    required this.customer,
+    this.fromHome,
+    this.fromWishlist,
+    this.fromCart,
+    this.fromOrder,
   }) : super(key: key);
 
   final CustomerModel customer;
-  final bool? fromHome, fromWishlist, fromCart;
+  final bool? fromHome, fromWishlist, fromCart, fromOrder;
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +71,15 @@ class CustomerMenu extends StatelessWidget {
                 title: const Text("Home"),
               ),
             ),
-            const ListTile(
-              leading: Icon(Icons.list),
-              title: Text("My Orders"),
+            Visibility(
+              visible: !(fromOrder ?? false),
+              child: ListTile(
+                leading: const Icon(Icons.list),
+                title: const Text("My Orders"),
+                onTap: () {
+                  Get.to(const CustomerOrderScreen());
+                },
+              ),
             ),
             Visibility(
               visible: !(fromCart ?? false),

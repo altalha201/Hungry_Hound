@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hungry_hound/data/model/order_model.dart';
+import 'package:hungry_hound/ui/controller/order_status_controller.dart';
 
+import '../../controller/order_controller.dart';
 import '../../utils/application_colors.dart';
 
 class OwnerOrderCard extends StatelessWidget {
   const OwnerOrderCard({
     Key? key,
+    required this.model,
   }) : super(key: key);
+
+  final OrderModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -24,19 +31,92 @@ class OwnerOrderCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text("Dish Name", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
-                  SizedBox(height: 4.0,),
-                  Text("Address", style: TextStyle(color: Colors.grey),),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      model.itemName ?? "",
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(
+                      height: 4.0,
+                    ),
+                    Text(
+                      model.userAddress ?? "",
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                    const SizedBox(
+                      height: 4.0,
+                    ),
+                    Text(
+                      model.orderStatus ?? "",
+                      style: const TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+                    ),
+                  ],
+                ),
               ),
-              const Spacer(),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.cancel_outlined, color: Colors.redAccent,),),
-              const SizedBox(width: 8.0,),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.check, color: colorPrimaryGreen,),),
+              Visibility(
+                visible: model.orderStatus == "Pending",
+                child: IconButton(
+                  onPressed: () async {
+                    await Get.find<OrderStatusController>().cancelOrder(
+                        model.orderId ?? "",
+                        model.userId ?? "",
+                        model.restaurantId ?? "");
+                    await Get.find<OrderController>().getRestaurantOrderList();
+                  },
+                  icon: const Icon(
+                    Icons.cancel_outlined,
+                    color: Colors.redAccent,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 8.0,
+              ),
+              Visibility(
+                visible: model.orderStatus == "Pending",
+                child: IconButton(
+                  onPressed: () async {
+                    await Get.find<OrderStatusController>().updateOrderStatus(
+                        model.orderId ?? "",
+                        model.userId ?? "",
+                        model.restaurantId ?? "",
+                        "Accepted");
+                    await Get.find<OrderController>().getRestaurantOrderList();
+                  },
+                  icon: const Icon(
+                    Icons.check,
+                    color: colorPrimaryGreen,
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: model.orderStatus != "Pending",
+                child: IconButton(
+                  onPressed: () async {
+                    late final String newStatus;
+                    if(model.orderStatus == "Accepted") {
+                      newStatus = "Preparing";
+                    } else if (model.orderStatus == "Preparing") {
+                      newStatus = "Delivered";
+                    }
+                    await Get.find<OrderStatusController>().updateOrderStatus(
+                        model.orderId ?? "",
+                        model.userId ?? "",
+                        model.restaurantId ?? "",
+                        newStatus);
+                    await Get.find<OrderController>().getRestaurantOrderList();
+                  },
+                  icon: const Icon(
+                    Icons.update,
+                    color: colorPrimaryGreen,
+                  ),
+                ),
+              ),
             ],
           ),
         ),

@@ -1,10 +1,12 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 import '../model/cart_item_model.dart';
 import '../model/customer_model.dart';
 import '../model/menu_item_model.dart';
+import '../model/order_model.dart';
 import '../model/response_model.dart';
 import '../model/restaurant_model.dart';
 
@@ -147,11 +149,104 @@ class CloudStorageHelper {
   }
 
   Future<ResponseModel> getCartList(String customerID) async {
-    final ref = cloudRef.collection("customer_item").doc("cart").collection(customerID);
+    final ref =
+        cloudRef.collection("customer_item").doc("cart").collection(customerID);
     List<CartItemModel> items = [];
     await ref.get().then((documents) {
       for (var docs in documents.docs) {
         items.add(CartItemModel.fromJson(docs.data()));
+      }
+    });
+    return ResponseModel(isSuccessful: true, returnData: items);
+  }
+
+  Future<ResponseModel> createOrder(String userID, String userAddress) async {
+    final cartSnap = await cloudRef
+        .collection("customer_item")
+        .doc("cart")
+        .collection(userID)
+        .get();
+    for (var docs in cartSnap.docs) {
+      final cartItem = CartItemModel.fromJson(docs.data());
+      final orderItem = OrderModel(
+        orderId: const Uuid().v1(),
+        userId: userID,
+        restaurantId: cartItem.restaurantId,
+        itemId: cartItem.itemId,
+        itemName: cartItem.itemName,
+        itemQuantity: cartItem.itemQuantity,
+        userAddress: userAddress,
+        orderStatus: "Pending",
+        orderTime: DateTime.now().toString(),
+      );
+      await cloudRef
+          .collection("restaurant_items")
+          .doc("order")
+          .collection(orderItem.restaurantId!)
+          .doc(orderItem.orderId)
+          .set(orderItem.toJson());
+      await cloudRef
+          .collection("customer_item")
+          .doc("order")
+          .collection(orderItem.userId!)
+          .doc(orderItem.orderId)
+          .set(orderItem.toJson());
+
+      docs.reference.delete();
+    }
+
+    return ResponseModel(isSuccessful: true);
+  }
+
+  Future<ResponseModel> getCustomerOrderList(String customerID) async {
+    final ref = cloudRef
+        .collection("customer_item")
+        .doc("order")
+        .collection(customerID);
+    List<OrderModel> items = [];
+    await ref.get().then((documents) {
+      for (var docs in documents.docs) {
+        var item = OrderModel.fromJson(docs.data());
+        log(DateTime.parse(item.orderTime ?? "0")
+            .add(const Duration(minutes: 20))
+            .toString());
+        log(DateTime.now().toString());
+        if (DateTime.parse(item.orderTime ?? "0")
+                    .add(const Duration(minutes: 20))
+                    .compareTo(DateTime.now()) <
+                0 &&
+            item.orderStatus == "Pending") {
+          docs.reference.delete();
+        } else {
+          items.add(item);
+        }
+      }
+    });
+    return ResponseModel(isSuccessful: true, returnData: items);
+  }
+
+  Future<ResponseModel> getRestaurantOrderList(String restaurantID) async {
+    final ref = cloudRef
+        .collection("restaurant_items")
+        .doc("order")
+        .collection(restaurantID);
+    List<OrderModel> items = [];
+    await ref.get().then((documents) {
+      for (var docs in documents.docs) {
+        var item = OrderModel.fromJson(docs.data());
+        log(DateTime.parse(item.orderTime ?? "0")
+            .add(const Duration(minutes: 20))
+            .compareTo(DateTime.now())
+            .toString());
+        if (DateTime.parse(item.orderTime ?? "0")
+                    .add(const Duration(minutes: 20))
+                    .compareTo(DateTime.now()) <
+                0 &&
+            item.orderStatus == "Pending") {
+          docs.reference.delete();
+        } else {
+          items.add(item);
+        }
       }
     });
     return ResponseModel(isSuccessful: true, returnData: items);

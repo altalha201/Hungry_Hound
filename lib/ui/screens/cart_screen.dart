@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../controller/cart_controller.dart';
 import '../controller/get_user_controller.dart';
+import '../controller/order_controller.dart';
 import '../widget/app_bars/customer_app_bar.dart';
 import '../widget/card_widgets/cart_item_card.dart';
 import '../widget/card_widgets/total_price_card.dart';
@@ -50,20 +51,35 @@ class _CartScreenState extends State<CartScreen> {
                     if (controller.gettingCartList) {
                       return const LoadingWidget();
                     }
-                    return ListView.builder(
-                        itemCount: controller.cartList.length,
-                        itemBuilder: (context, index) {
-                          return CartItemCard(
-                              item: controller.cartList.elementAt(index));
-                        });
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        await controller.getCartList();
+                      },
+                      child: ListView.builder(
+                          itemCount: controller.cartList.length,
+                          itemBuilder: (context, index) {
+                            return CartItemCard(
+                                item: controller.cartList.elementAt(index));
+                          }),
+                    );
                   },
                 )),
           ),
           TotalPriceCard(
             totalPrice: _totalPrice,
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Text("Order Now"),
+            child: GetBuilder<OrderController>(
+              builder: (controller) {
+                if (controller.placingOrder) {
+                  return const LoadingWidget();
+                }
+                return ElevatedButton(
+                  onPressed: () async {
+                    await controller.placeOrder();
+                    Get.find<CartController>().getCartList();
+                  },
+                  child: const Text("Order Now"),
+                );
+              }
             ),
           ),
         ],

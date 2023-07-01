@@ -22,6 +22,9 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   image_picker: ^0.8.9
   uuid: ^3.0.7
+  timer_count_down: ^2.2.2
+  intl: ^0.18.1
+  stop_watch_timer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

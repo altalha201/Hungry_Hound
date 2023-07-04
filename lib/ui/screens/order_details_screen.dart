@@ -66,7 +66,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       width: 250,
                       child: CircularProgressIndicator(
                         value: _progressValue,
-                        backgroundColor: colorPrimaryGreen.withOpacity(0.2),
+                        backgroundColor: widget.model.orderStatus == 'Cancel'
+                            ? Colors.red
+                            : colorPrimaryGreen.withOpacity(0.2),
                       ),
                     ),
                   ),
@@ -100,17 +102,33 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               width: double.infinity,
               height: 50,
               child: Visibility(
-                visible: widget.model.orderStatus != "Delivered",
-                child: ElevatedButton(
+                visible: widget.model.orderStatus != "Cancel",
+                replacement: ElevatedButton(
                   onPressed: () async {
-                    await Get.find<OrderStatusController>().cancelOrder(
-                        widget.model.orderId ?? "", widget.model.userId ?? "",
-                        widget.model.restaurantId ?? "");
+                    await Get.find<OrderStatusController>()
+                        .deleteFromCustomerList(
+                        widget.model.orderId ?? "", widget.model.userId ?? "");
                     Get.find<OrderController>().getCustomerOrderList();
                     Get.back();
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  child: const Text("Cancel Order"),
+                  child: const Text("Delete From List"),
+                ),
+                child: Visibility(
+                  visible: widget.model.orderStatus != "Delivered",
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await Get.find<OrderStatusController>().cancelOrder(
+                          widget.model.orderId ?? "",
+                          widget.model.userId ?? "",
+                          widget.model.restaurantId ?? "");
+                      Get.find<OrderController>().getCustomerOrderList();
+                      Get.back();
+                    },
+                    style:
+                    ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    child: const Text("Cancel Order"),
+                  ),
                 ),
               ),
             )

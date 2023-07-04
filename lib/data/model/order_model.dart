@@ -1,5 +1,6 @@
 class OrderModel {
   String? orderId;
+  String? deviceToken;
   String? userId;
   String? restaurantId;
   String? itemId;
@@ -11,6 +12,7 @@ class OrderModel {
 
   OrderModel(
       {this.orderId,
+        this.deviceToken,
         this.userId,
         this.restaurantId,
         this.itemId,
@@ -22,6 +24,7 @@ class OrderModel {
 
   OrderModel.fromJson(Map<String, dynamic> json) {
     orderId = json['order_id'];
+    deviceToken = json['device_token'];
     userId = json['user_id'];
     restaurantId = json['restaurant_id'];
     itemId = json['item_id'];
@@ -35,6 +38,7 @@ class OrderModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['order_id'] = orderId;
+    data['device_token'] = deviceToken;
     data['user_id'] = userId;
     data['restaurant_id'] = restaurantId;
     data['item_id'] = itemId;

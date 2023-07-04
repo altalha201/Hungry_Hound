@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 
 import '../../data/model/order_model.dart';
@@ -19,9 +20,13 @@ class OrderController extends GetxController {
     _placingOrder = true;
     update();
 
+    String? deviceToken = await FirebaseMessaging.instance.getToken();
+
     await CloudStorageHelper().createOrder(
-        Get.find<GetUserController>().customer.userId!,
-        Get.find<GetUserController>().customer.address!);
+      Get.find<GetUserController>().customer.userId!,
+      Get.find<GetUserController>().customer.address!,
+      deviceToken ?? "",
+    );
     _placingOrder = false;
     update();
   }

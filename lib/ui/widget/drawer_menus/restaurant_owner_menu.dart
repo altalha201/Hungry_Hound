@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hungry_hound/ui/screens/order_list_screen.dart';
 
 import '../../controller/cache_controller.dart';
 import '../../utils/application_colors.dart';
@@ -45,12 +46,16 @@ class RestaurantOwnerMenu extends StatelessWidget {
                   )),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                Get.to(OrderListScreen(fromCompleted: true, restaurantID: restaurantID,));
+              },
               leading: const Icon(Icons.playlist_add_check_sharp),
               title: const Text("Completed Order"),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                Get.to(OrderListScreen(restaurantID: restaurantID,));
+              },
               leading: const Icon(Icons.timelapse),
               title: const Text("Ongoing Order"),
             ),

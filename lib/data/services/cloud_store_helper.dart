@@ -160,7 +160,7 @@ class CloudStorageHelper {
     return ResponseModel(isSuccessful: true, returnData: items);
   }
 
-  Future<ResponseModel> createOrder(String userID, String userAddress) async {
+  Future<ResponseModel> createOrder(String userID, String userAddress, String deviceToken) async {
     final cartSnap = await cloudRef
         .collection("customer_item")
         .doc("cart")
@@ -170,6 +170,7 @@ class CloudStorageHelper {
       final cartItem = CartItemModel.fromJson(docs.data());
       final orderItem = OrderModel(
         orderId: const Uuid().v1(),
+        deviceToken: deviceToken,
         userId: userID,
         restaurantId: cartItem.restaurantId,
         itemId: cartItem.itemId,
@@ -216,10 +217,10 @@ class CloudStorageHelper {
                     .compareTo(DateTime.now()) <
                 0 &&
             item.orderStatus == "Pending") {
-          docs.reference.delete();
-        } else {
-          items.add(item);
-        }
+          item.orderStatus = "Cancel";
+          docs.data().update("order_status", (value) => "Cancel");
+        } 
+        items.add(item);
       }
     });
     return ResponseModel(isSuccessful: true, returnData: items);

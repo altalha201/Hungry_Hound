@@ -25,6 +25,7 @@ dependencies:
   timer_count_down: ^2.2.2
   intl: ^0.18.1
   stop_watch_timer: ^2.0.0
+  firebase_messaging: ^14.6.4
 
 dev_dependencies:
   flutter_test:

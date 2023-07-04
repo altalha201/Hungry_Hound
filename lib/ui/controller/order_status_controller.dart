@@ -17,14 +17,13 @@ class OrderStatusController extends GetxController {
         .get();
     restaurantRef.reference.delete();
 
-    final customerRef = await CloudStorageHelper()
+    await CloudStorageHelper()
         .cloudRef
         .collection("customer_item")
         .doc("order")
         .collection(customerID)
         .doc(orderID)
-        .get();
-    customerRef.reference.delete();
+        .update({'order_status': "Cancel"});
   }
 
   Future<void> updateOrderStatus(
@@ -36,7 +35,7 @@ class OrderStatusController extends GetxController {
     await CloudStorageHelper()
         .cloudRef
         .collection("restaurant_items")
-        .doc("order")
+        .doc("ongoing")
         .collection(restaurantID)
         .doc(orderID)
         .update({'order_status': newStatus});
@@ -48,5 +47,19 @@ class OrderStatusController extends GetxController {
         .collection(customerID)
         .doc(orderID)
         .update({'order_status': newStatus});
+  }
+
+  Future<void> deleteFromCustomerList(
+    String orderID,
+    String customerID,
+  ) async {
+    final restaurantRef = await CloudStorageHelper()
+        .cloudRef
+        .collection("customer_item")
+        .doc("order")
+        .collection(customerID)
+        .doc(orderID)
+        .get();
+    restaurantRef.reference.delete();
   }
 }

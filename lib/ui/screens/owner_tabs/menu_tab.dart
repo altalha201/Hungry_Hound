@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hungry_hound/ui/controller/menu_item_controller.dart';
-import 'package:hungry_hound/ui/widget/loading_widget.dart';
 
+import '../../controller/menu_item_controller.dart';
 import '../../widget/card_widgets/menu_item_card.dart';
+import '../../widget/loading_widget.dart';
 import '../create_menu_item_screen.dart';
 
 class MenuTab extends StatefulWidget {

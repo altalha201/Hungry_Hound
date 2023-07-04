@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hungry_hound/ui/screens/home_screen.dart';
+
+import '../screens/home_screen.dart';
 
 class CacheController extends GetxController {
   String? _userID;

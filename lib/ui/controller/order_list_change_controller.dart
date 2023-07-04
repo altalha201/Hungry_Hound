@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:hungry_hound/data/model/order_model.dart';
 
+import '../../data/model/order_model.dart';
 import '../../data/services/cloud_store_helper.dart';
 
 class OrderListChangeController extends GetxController {

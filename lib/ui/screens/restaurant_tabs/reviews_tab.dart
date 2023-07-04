@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hungry_hound/ui/widget/card_widgets/review_card.dart';
+
+import '../../widget/card_widgets/review_card.dart';
 
 class ReviewsTab extends StatefulWidget {
   const ReviewsTab({Key? key}) : super(key: key);

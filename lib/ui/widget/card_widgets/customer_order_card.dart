@@ -6,7 +6,8 @@ import '../../screens/order_details_screen.dart';
 
 class CustomerOrderCard extends StatelessWidget {
   const CustomerOrderCard({
-    Key? key, required this.order,
+    Key? key,
+    required this.order,
   }) : super(key: key);
 
   final OrderModel order;
@@ -33,9 +34,24 @@ class CustomerOrderCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(order.itemName ?? "", style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
-                        const SizedBox(height: 4,),
-                        Text(order.orderStatus ?? "", style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w200, fontStyle: FontStyle.italic),),
+                        Text(
+                          order.itemName ?? "",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          order.orderStatus ?? "",
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w200,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
                       ],
                     ),
                   ),

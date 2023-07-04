@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hungry_hound/ui/screens/order_list_screen.dart';
 
 import '../../controller/cache_controller.dart';
+import '../../screens/order_list_screen.dart';
 import '../../utils/application_colors.dart';
 
 class RestaurantOwnerMenu extends StatelessWidget {

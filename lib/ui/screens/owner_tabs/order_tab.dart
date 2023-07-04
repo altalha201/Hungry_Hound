@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hungry_hound/ui/controller/order_controller.dart';
 
+import '../../controller/order_controller.dart';
 import '../../widget/card_widgets/owner_order_card.dart';
 import '../../widget/loading_widget.dart';
 
@@ -40,7 +38,6 @@ class _OrderTabState extends State<OrderTab> {
               child: ListView.builder(
                 itemCount: controller.orderList.length,
                 itemBuilder: (context, index) {
-                  log(controller.orderList.length.toString());
                   return OwnerOrderCard(
                     model: controller.orderList.elementAt(index),
                   );

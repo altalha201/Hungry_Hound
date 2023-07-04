@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hungry_hound/ui/controller/order_controller.dart';
-import 'package:hungry_hound/ui/controller/order_status_controller.dart';
-import 'package:hungry_hound/ui/utils/application_colors.dart';
 
 import '../../data/model/order_model.dart';
+import '../controller/order_controller.dart';
+import '../controller/order_status_controller.dart';
+import '../utils/application_colors.dart';
 import '../widget/app_bars/logo_app_bar.dart';
 
 class OrderDetailsScreen extends StatefulWidget {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hungry_hound/ui/controller/restaurant_list_controller.dart';
-import 'package:hungry_hound/ui/widget/loading_widget.dart';
-import 'package:hungry_hound/ui/widget/text_logo.dart';
 
+import '../controller/restaurant_list_controller.dart';
 import '../widget/card_widgets/restaurant_card.dart';
 import '../widget/drawer_menus/base_manu.dart';
+import '../widget/loading_widget.dart';
+import '../widget/text_logo.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

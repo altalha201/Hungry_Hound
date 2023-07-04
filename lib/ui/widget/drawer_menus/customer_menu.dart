@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hungry_hound/ui/screens/customer_order_screen.dart';
 
 import '../../../data/model/customer_model.dart';
 import '../../controller/cache_controller.dart';
 import '../../screens/cart_screen.dart';
 import '../../screens/customer_home_screen.dart';
+import '../../screens/customer_order_screen.dart';
 import '../../screens/wishlist_screen.dart';
 import '../../utils/application_colors.dart';
 import '../../utils/util_functions.dart';

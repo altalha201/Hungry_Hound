@@ -31,11 +31,12 @@ class OrderStatusController extends GetxController {
     String customerID,
     String restaurantID,
     String newStatus,
+    String from,
   ) async {
     await CloudStorageHelper()
         .cloudRef
         .collection("restaurant_items")
-        .doc("ongoing")
+        .doc(from)
         .collection(restaurantID)
         .doc(orderID)
         .update({'order_status': newStatus});

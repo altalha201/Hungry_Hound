@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hungry_hound/ui/controller/order_controller.dart';
-import 'package:hungry_hound/ui/widget/loading_widget.dart';
 
 import '../controller/get_user_controller.dart';
+import '../controller/order_controller.dart';
 import '../widget/app_bars/customer_app_bar.dart';
 import '../widget/card_widgets/customer_order_card.dart';
 import '../widget/drawer_menus/customer_menu.dart';
+import '../widget/loading_widget.dart';
 
 class CustomerOrderScreen extends StatefulWidget {
   const CustomerOrderScreen({Key? key}) : super(key: key);

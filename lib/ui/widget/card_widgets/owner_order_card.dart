@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hungry_hound/data/model/order_model.dart';
-import 'package:hungry_hound/ui/controller/order_list_change_controller.dart';
-import 'package:hungry_hound/ui/controller/order_status_controller.dart';
 
+import '../../../data/model/order_model.dart';
+import '../../../data/services/firebase_messaging_helper.dart';
 import '../../controller/order_controller.dart';
+import '../../controller/order_list_change_controller.dart';
+import '../../controller/order_status_controller.dart';
 import '../../utils/application_colors.dart';
 
 class OwnerOrderCard extends StatelessWidget {
@@ -68,6 +69,10 @@ class OwnerOrderCard extends StatelessWidget {
                         model.orderId ?? "",
                         model.userId ?? "",
                         model.restaurantId ?? "");
+                    await FirebaseMessagingHelper().sendNotification(
+                        "Order Rejected",
+                        "Dear, your order for ${model.itemName} has been canceled by the restaurant",
+                        model.deviceToken ?? "");
                     await Get.find<OrderController>().getRestaurantOrderList();
                   },
                   icon: const Icon(
@@ -87,9 +92,14 @@ class OwnerOrderCard extends StatelessWidget {
                         model.orderId ?? "",
                         model.userId ?? "",
                         model.restaurantId ?? "",
-                        "Accepted");
+                        "Accepted",
+                        "order");
                     await Get.find<OrderListChangeController>().addToOnGoing(
                         model.orderId ?? "", model.restaurantId ?? "");
+                    await FirebaseMessagingHelper().sendNotification(
+                        "Order Accepted",
+                        "Dear, your order for ${model.itemName} has been accepted. We will be arrive soon.",
+                        model.deviceToken ?? "");
                     await Get.find<OrderController>().getRestaurantOrderList();
                   },
                   icon: const Icon(
@@ -100,7 +110,10 @@ class OwnerOrderCard extends StatelessWidget {
               ),
               Visibility(
                 visible: model.orderStatus != "Delivered",
-                replacement: const Icon(Icons.done, size: 32,),
+                replacement: const Icon(
+                  Icons.done,
+                  size: 32,
+                ),
                 child: Visibility(
                   visible: model.orderStatus != "Pending",
                   child: IconButton(
@@ -115,7 +128,8 @@ class OwnerOrderCard extends StatelessWidget {
                           model.orderId ?? "",
                           model.userId ?? "",
                           model.restaurantId ?? "",
-                          newStatus);
+                          newStatus,
+                          "ongoing");
                       if (newStatus == "Delivered") {
                         await Get.find<OrderListChangeController>()
                             .addToCompleted(

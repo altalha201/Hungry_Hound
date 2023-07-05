@@ -45,11 +45,16 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           if (listController.gettingRestaurants) {
             return const LoadingWidget();
           }
-          return SingleChildScrollView(
-            child: Column(
-              children: listController.restaurants
-                  .map((restaurant) => RestaurantCard(restaurant: restaurant,))
-                  .toList(),
+          return RefreshIndicator(
+            onRefresh: () async {
+              listController.getRestaurantList();
+            },
+            child: ListView.builder(
+              itemCount: listController.restaurants.length,
+              itemBuilder: (context, index) {
+                return RestaurantCard(
+                    restaurant: listController.restaurants.elementAt(index));
+              },
             ),
           );
         }),

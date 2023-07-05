@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/other_utils.dart';
+import '../../../data/model/review_model.dart';
 
 class ReviewCard extends StatelessWidget {
   const ReviewCard({
-    Key? key,
+    Key? key, required this.model,
   }) : super(key: key);
+
+  final ReviewModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class ReviewCard extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
@@ -33,7 +36,7 @@ class ReviewCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 8.0),
                   Text(
-                    "Rabbil Hasan",
+                    model.userName ?? "",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: Colors.grey.shade800,
@@ -43,9 +46,9 @@ class ReviewCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8.0),
-              const Text(
-                textDescription,
-                style: TextStyle(
+              Text(
+                model.reviewDescription ?? "",
+                style: const TextStyle(
                   fontSize: 11,
                   color: Colors.grey,
                 ),

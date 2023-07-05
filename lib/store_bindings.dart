@@ -10,6 +10,7 @@ import 'ui/controller/order_list_change_controller.dart';
 import 'ui/controller/order_status_controller.dart';
 import 'ui/controller/profile_create_controller.dart';
 import 'ui/controller/restaurant_list_controller.dart';
+import 'ui/controller/review_controller.dart';
 import 'ui/controller/wish_list_controller.dart';
 
 class StoreBindings extends Bindings {
@@ -25,6 +26,7 @@ class StoreBindings extends Bindings {
     Get.put(OrderStatusController());
     Get.put(ProfileCreateController());
     Get.put(RestaurantListController());
+    Get.put(ReviewController());
     Get.put(WishListController());
   }
 }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../data/model/restaurant_model.dart';
 import '../controller/menu_item_controller.dart';
+import '../controller/review_controller.dart';
 import '../utils/application_colors.dart';
 import '../utils/util_functions.dart';
 import 'restaurant_tabs/menu_tab.dart';
@@ -22,8 +23,9 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
 
   @override
   void initState() {
-    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timeStamp) {
-      Get.find<MenuItemController>().getItems(widget.restaurant.restaurantId ?? "");
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timeStamp) async {
+      await Get.find<MenuItemController>().getItems(widget.restaurant.restaurantId ?? "");
+      await Get.find<ReviewController>().getReviews(widget.restaurant.restaurantId ?? "");
     });
     super.initState();
   }
@@ -80,8 +82,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             child: DefaultTabController(
               length: 2,
               child: Column(
-                children: const [
-                  TabBar(
+                children: [
+                  const TabBar(
                     labelColor: colorPrimaryBlack,
                     indicatorColor: colorPrimaryGreen,
                     tabs: [
@@ -96,8 +98,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                   Expanded(
                     child: TabBarView(
                       children: [
-                        MenuTab(),
-                        ReviewsTab(),
+                        const MenuTab(),
+                        ReviewsTab(restaurantID: widget.restaurant.restaurantId ?? "",),
                       ],
                     ),
                   ),

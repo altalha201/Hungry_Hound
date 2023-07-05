@@ -6,6 +6,7 @@ import '../../controller/cache_controller.dart';
 import '../../screens/cart_screen.dart';
 import '../../screens/customer_home_screen.dart';
 import '../../screens/customer_order_screen.dart';
+import '../../screens/user_profile_screen.dart';
 import '../../screens/wishlist_screen.dart';
 import '../../utils/application_colors.dart';
 import '../../utils/util_functions.dart';
@@ -17,11 +18,11 @@ class CustomerMenu extends StatelessWidget {
     this.fromHome,
     this.fromWishlist,
     this.fromCart,
-    this.fromOrder,
+    this.fromOrder, this.fromProfile,
   }) : super(key: key);
 
   final CustomerModel customer;
-  final bool? fromHome, fromWishlist, fromCart, fromOrder;
+  final bool? fromHome, fromWishlist, fromCart, fromOrder, fromProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -101,9 +102,15 @@ class CustomerMenu extends StatelessWidget {
                 title: const Text("My wishlist"),
               ),
             ),
-            const ListTile(
-              leading: Icon(Icons.person),
-              title: Text("Profile"),
+            Visibility(
+              visible: !(fromProfile ?? false),
+              child: ListTile(
+                onTap: () {
+                  Get.to(const UserProfileScreen());
+                },
+                leading: const Icon(Icons.person),
+                title: const Text("Profile"),
+              ),
             ),
             ListTile(
               onTap: () {

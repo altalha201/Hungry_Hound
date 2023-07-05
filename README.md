@@ -14,3 +14,11 @@ A food ordering application.
 - Get notify when a order is made
 - Accept/Reject Order
 
+
+## Application Screen shorts
+
+
+## Apk download link
+
+- ![Download from google drive](https://drive.google.com/drive/folders/1FR2yWiNrOAJ39OZ2nEbsybpXssL_2Shx?usp=drive_link)
+

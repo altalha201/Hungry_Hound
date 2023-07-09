@@ -1,12 +1,7 @@
 ![Banner](git_components/hungry_hound_banner.png)
 
-<h1 align="center">Hungry Hound <img src="git_components/logo.png" height="24"></h1>
-
-<p align="center">
-  # Hungry Hound 
-</p>
-
-A food ordering application.
+<h1 align="center">Hungry Hound</h1>
+<p align="center">A food ordering application.</p>
 
 ##### Customer Side
 - See restaurant's menu
